@@ -60,7 +60,6 @@ builder.Services.AddEndpoints<Program>(builder.Configuration);
 
 var app = builder.Build();
 
-//TODO: Ver isto em condicoes
 using (var scope = ((IApplicationBuilder)app).ApplicationServices.CreateScope())
 {
     var services = scope.ServiceProvider;

@@ -32,7 +32,7 @@ public class AuthEndpoints : IEndpoints
             if (!string.IsNullOrEmpty(user.Email) &&
                 !string.IsNullOrEmpty(user.Password))
             {
-                //TODO: Replace this with proper identity model authentication 
+                //TODO: Replace this with proper authentication 
                 var loggedInUser = service.GetUserByEmail(user);
                 
                 if (PasswordUtils.ValidatePassword(user.Password, loggedInUser.PasswordHash!,
