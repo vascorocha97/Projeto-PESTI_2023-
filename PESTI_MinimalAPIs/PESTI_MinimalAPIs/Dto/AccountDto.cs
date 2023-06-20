@@ -1,8 +1,7 @@
-namespace PESTI_MinimalAPIs.Models;
+namespace PESTI_MinimalAPIs.Dto;
 
-public class Account
+public class AccountDto
 {
-    public Guid AccountId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Telephone1 { get; set; } = string.Empty;
     public string Fax { get; set; } = string.Empty;

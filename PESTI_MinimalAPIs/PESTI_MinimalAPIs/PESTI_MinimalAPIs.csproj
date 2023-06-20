@@ -10,15 +10,16 @@
       <Compile Remove="Models\Caso.cs" />
       <Compile Remove="Data\IDbConnectionFactory.cs" />
       <Compile Remove="Data\SqliteConnectionFactory.cs" />
-      <Compile Remove="Models\Account.cs" />
       <Compile Remove="Models\Case.cs" />
       <Compile Remove="Models\Contact.cs" />
       <Compile Remove="DTO\**" />
+      <Compile Include="Dto\AccountDto.cs" />
       <Compile Include="Dto\UserDto.cs" />
       <Compile Remove="Helpers\Utils.cs" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="12.0.1" />
       <PackageReference Include="Dapper" Version="2.0.123" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />

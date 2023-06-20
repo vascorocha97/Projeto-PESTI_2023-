@@ -16,9 +16,6 @@ public class AuthEndpoints : IEndpoints
 {
     public static void DefineEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapGet("test",
-            () => "This is a test request");
-        
         app.MapGet("testauth", 
             [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
             () => "You are authenticated");
@@ -32,7 +29,6 @@ public class AuthEndpoints : IEndpoints
             if (!string.IsNullOrEmpty(user.Email) &&
                 !string.IsNullOrEmpty(user.Password))
             {
-                //TODO: Replace this with proper authentication 
                 var loggedInUser = service.GetUserByEmail(user);
                 
                 if (PasswordUtils.ValidatePassword(user.Password, loggedInUser.PasswordHash!,

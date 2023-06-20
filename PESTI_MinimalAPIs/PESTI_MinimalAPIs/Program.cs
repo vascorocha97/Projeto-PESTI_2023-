@@ -66,7 +66,7 @@ using (var scope = ((IApplicationBuilder)app).ApplicationServices.CreateScope())
     var dbContext = services.GetRequiredService<DataContext>();
     var userService = services.GetRequiredService<IUserService>();
 
-    UserDataSeeder.SeedUsers(userService);
+    UserBootsraper.SeedUsers(userService);
 }
 
 

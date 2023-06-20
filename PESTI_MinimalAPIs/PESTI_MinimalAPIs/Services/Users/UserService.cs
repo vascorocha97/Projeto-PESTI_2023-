@@ -17,31 +17,28 @@ public class UserService : IUserService
 
     public void CreateUser(UserDto userDto)
     {
+        //check if data is null
         if (userDto.Name == null || userDto.Password == null || userDto.Email == null)
         {
-            throw new ArgumentNullException(nameof(userDto.Name), "User data cannot be null.");
+            throw new ArgumentNullException(nameof(userDto.Name), "User data cannot be empty.");
         }
         
+        //Generates password salt
         byte[] salt = PasswordUtils.GeneratePasswordSalt();
         
+        //Creates user
         var user = new User
         {
             Id = Guid.NewGuid(),
             Name = userDto.Name,
             Email = userDto.Email,
+            //Uses the previously generated password salt and the user password to generate the hash 
             PasswordHash = PasswordUtils.GeneratePasswordHash(userDto.Password, salt),
-            PasswordSalt = salt,
-            PasswordResetToken = null,
-            ResetTokenExpires = null
+            PasswordSalt = salt
         };
 
         _dbContext.Users.Add(user);
         _dbContext.SaveChanges();
-    }
-
-    public User GetUserByEmail(UserDto user)
-    {
-        return _dbContext.Users.FirstOrDefault(u => u.Email == user.Email)!;
     }
     
     public User GetUserByEmail(UserLogin user)
@@ -49,8 +46,9 @@ public class UserService : IUserService
         return _dbContext.Users.FirstOrDefault(u => u.Email == user.Email)!;
     }
     
-    public bool AnyUsersExist()
+    public bool CheckForUsers()
     {
+        //check if there are any users in the db
         return _dbContext.Users.Any();
     }
 }

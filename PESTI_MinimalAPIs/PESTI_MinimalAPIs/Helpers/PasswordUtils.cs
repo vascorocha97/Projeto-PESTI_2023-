@@ -6,27 +6,32 @@ public static class PasswordUtils
 {
     public static byte[] GeneratePasswordSalt()
     {
-        byte[] salt = new byte[16];
-        using (var rng = RandomNumberGenerator.Create())
+        byte[] salt = new byte[32];
+        using (var random = RandomNumberGenerator.Create())
         {
-            rng.GetBytes(salt);
+            //fills salt array with values
+            random.GetBytes(salt);
         }
-
         return salt;
     }
     
-    public static byte[] GeneratePasswordHash(string password, byte[] salt)
+    public static byte[] GeneratePasswordHash(string userPassword, byte[] salt)
     {
-        if (password == null)
+        //checks if password is null
+        if (userPassword == null)
         {
-            throw new ArgumentNullException(nameof(password), "Password cannot be null.");
+            throw new ArgumentNullException(nameof(userPassword), "Password cannot be null.");
         }
-    
-        const int numBytesRequested = 32;
+        
+        //length of the password hash array
+        const int hashLength = 32;
+        //number of iterations
         const int iterationCount = 10000;
-        using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterationCount, HashAlgorithmName.SHA256))
+        
+        //uses PBKDF2
+        using (var hashAlgorithm = new Rfc2898DeriveBytes(userPassword, salt, iterationCount, HashAlgorithmName.SHA256))
         {
-            return pbkdf2.GetBytes(numBytesRequested);
+            return hashAlgorithm.GetBytes(hashLength);
         }
     }
     
