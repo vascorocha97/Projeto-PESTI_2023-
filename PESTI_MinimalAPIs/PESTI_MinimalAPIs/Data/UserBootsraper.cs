@@ -1,5 +1,6 @@
-using PESTI_MinimalAPIs.Dto;
+using PESTI_MinimalAPIs.Contracts;
 using PESTI_MinimalAPIs.Services;
+using PESTI_MinimalAPIs.Services.Users;
 
 namespace PESTI_MinimalAPIs.Data;
 

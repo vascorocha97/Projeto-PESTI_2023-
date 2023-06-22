@@ -1,4 +1,4 @@
-namespace PESTI_MinimalAPIs.Dto;
+namespace PESTI_MinimalAPIs.Contracts.Contacts;
 
 public class ContactDto
 {

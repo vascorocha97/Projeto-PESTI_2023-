@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using PESTI_MinimalAPIs.Data;
 using PESTI_MinimalAPIs.Endpoints.Internal;
 using PESTI_MinimalAPIs.Services;
+using PESTI_MinimalAPIs.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

@@ -1,5 +1,6 @@
 using AutoMapper;
-using PESTI_MinimalAPIs.Dto;
+using PESTI_MinimalAPIs.Contracts;
+using PESTI_MinimalAPIs.Contracts.Accounts;
 using PESTI_MinimalAPIs.Models;
 
 namespace PESTI_MinimalAPIs.Mappers
@@ -26,7 +27,8 @@ namespace PESTI_MinimalAPIs.Mappers
                     .ForMember(dest => dest.myp_AccountTicker, 
                         opt => opt.MapFrom(src => src.Ticker))
                     .ForMember(dest => dest.myp_RelationshipField, 
-                        opt => opt.MapFrom(src => src.RelationshipField));
+                        opt => opt.MapFrom(src => src.RelationshipField))
+                    .ReverseMap();
             });
 
             _mapper = config.CreateMapper();

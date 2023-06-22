@@ -1,4 +1,5 @@
-using PESTI_MinimalAPIs.Dto;
+using PESTI_MinimalAPIs.Contracts;
+using PESTI_MinimalAPIs.Contracts.Contacts;
 
 namespace PESTI_MinimalAPIs.Services.Contacts;
 

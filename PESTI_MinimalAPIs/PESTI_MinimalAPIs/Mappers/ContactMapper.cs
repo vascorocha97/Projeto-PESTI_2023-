@@ -1,5 +1,6 @@
 using AutoMapper;
-using PESTI_MinimalAPIs.Dto;
+using PESTI_MinimalAPIs.Contracts;
+using PESTI_MinimalAPIs.Contracts.Contacts;
 using PESTI_MinimalAPIs.Models;
 
 namespace PESTI_MinimalAPIs.Mappers;
@@ -24,7 +25,8 @@ public class ContactMapper
                 .ForMember(dest => dest.myp_ContactEmail,
                     opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.myp_ContactPhone,
-                    opt => opt.MapFrom(src => src.Phone));
+                    opt => opt.MapFrom(src => src.Phone))
+                .ReverseMap();
         });
 
         _mapper = config.CreateMapper();
@@ -32,13 +34,13 @@ public class ContactMapper
     
     public ContactDto ContactToDto(Contact contact)
     {
-        // Map an account to dto
+        // Map a contact to dto
         return _mapper.Map<ContactDto>(contact);
     }
 
     public Contact DtoToContact(ContactDto contactDto)
     {
-        // Map a dto to account
+        // Map a dto to contact
         return _mapper.Map<Contact>(contactDto);
     }
 }

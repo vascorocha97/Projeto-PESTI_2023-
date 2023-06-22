@@ -1,7 +1,7 @@
-using PESTI_MinimalAPIs.Dto;
+using PESTI_MinimalAPIs.Contracts;
 using PESTI_MinimalAPIs.Models;
 
-namespace PESTI_MinimalAPIs.Services;
+namespace PESTI_MinimalAPIs.Services.Users;
 
 public interface IUserService
 {

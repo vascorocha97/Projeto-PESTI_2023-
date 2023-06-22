@@ -2,7 +2,6 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PESTI_MinimalAPIs.Dto;
 using PESTI_MinimalAPIs.Endpoints.Internal;
 using PESTI_MinimalAPIs.Mappers;
 using PESTI_MinimalAPIs.Models;

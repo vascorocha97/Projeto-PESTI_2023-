@@ -4,11 +4,12 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using PESTI_MinimalAPIs.Dto;
+using PESTI_MinimalAPIs.Contracts;
 using PESTI_MinimalAPIs.Endpoints.Internal;
 using PESTI_MinimalAPIs.Helpers;
 using PESTI_MinimalAPIs.Models;
 using PESTI_MinimalAPIs.Services;
+using PESTI_MinimalAPIs.Services.Users;
 
 namespace PESTI_MinimalAPIs.Endpoints;
 

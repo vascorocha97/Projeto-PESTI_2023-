@@ -213,3 +213,4 @@
 /Users/vasco/Documents/LEI/PESTI/Repo/Myp/PESTI_MinimalAPIs/PESTI_MinimalAPIs/bin/Debug/net7.0/AutoMapper.dll
 /Users/vasco/Documents/LEI/PESTI/Repo/Myp/PESTI_MinimalAPIs/PESTI_MinimalAPIs/bin/Debug/net7.0/Microsoft.IdentityModel.Clients.ActiveDirectory.dll
 /Users/vasco/Documents/LEI/PESTI/Repo/Myp/PESTI_MinimalAPIs/PESTI_MinimalAPIs/bin/Debug/net7.0/RestSharp.dll
+/Users/vasco/Documents/LEI/PESTI/Repo/Myp/PESTI_MinimalAPIs/PESTI_MinimalAPIs/bin/Debug/net7.0/Newtonsoft.Json.dll

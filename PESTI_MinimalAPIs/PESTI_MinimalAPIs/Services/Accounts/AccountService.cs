@@ -1,4 +1,5 @@
-using PESTI_MinimalAPIs.Dto;
+using PESTI_MinimalAPIs.Contracts;
+using PESTI_MinimalAPIs.Contracts.Accounts;
 using PESTI_MinimalAPIs.Helpers;
 using PESTI_MinimalAPIs.Mappers;
 using PESTI_MinimalAPIs.Models;
