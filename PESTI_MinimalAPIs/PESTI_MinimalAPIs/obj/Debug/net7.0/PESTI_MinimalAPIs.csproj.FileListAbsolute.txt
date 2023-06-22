@@ -211,3 +211,5 @@
 /Users/vasco/Documents/LEI/PESTI/Repo/Myp/PESTI_MinimalAPIs/PESTI_MinimalAPIs/obj/Debug/net7.0/PESTI_MinimalAPIs.genruntimeconfig.cache
 /Users/vasco/Documents/LEI/PESTI/Repo/Myp/PESTI_MinimalAPIs/PESTI_MinimalAPIs/obj/Debug/net7.0/ref/PESTI_MinimalAPIs.dll
 /Users/vasco/Documents/LEI/PESTI/Repo/Myp/PESTI_MinimalAPIs/PESTI_MinimalAPIs/bin/Debug/net7.0/AutoMapper.dll
+/Users/vasco/Documents/LEI/PESTI/Repo/Myp/PESTI_MinimalAPIs/PESTI_MinimalAPIs/bin/Debug/net7.0/Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+/Users/vasco/Documents/LEI/PESTI/Repo/Myp/PESTI_MinimalAPIs/PESTI_MinimalAPIs/bin/Debug/net7.0/RestSharp.dll

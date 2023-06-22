@@ -2,11 +2,11 @@ namespace PESTI_MinimalAPIs.Dto;
 
 public class AccountDto
 {
-    public string Name { get; set; } = string.Empty;
-    public string Telephone1 { get; set; } = string.Empty;
-    public string Fax { get; set; } = string.Empty;
-    public string WebsiteUrl { get; set; } = string.Empty;
-    public Guid ParentAccountId { get; set; }
-    public string TickerSymbol { get; set; } = string.Empty;
-    public int CustomerTypeCode { get; set; }
+    public string myp_AccountName { get; set; } = string.Empty;
+    public string myp_AccountPhone { get; set; } = string.Empty;
+    public string myp_AccountFax { get; set; } = string.Empty;
+    public string myp_AccountWebsite { get; set; } = string.Empty;
+    public Guid myp_ParentAccountId { get; set; }
+    public string myp_AccountTicker { get; set; } = string.Empty;
+    public int myp_RelationshipField { get; set; }
 }
