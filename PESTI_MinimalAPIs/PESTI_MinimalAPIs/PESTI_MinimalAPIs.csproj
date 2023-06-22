@@ -11,9 +11,9 @@
       <Compile Remove="Data\IDbConnectionFactory.cs" />
       <Compile Remove="Data\SqliteConnectionFactory.cs" />
       <Compile Remove="Models\Case.cs" />
-      <Compile Remove="Models\Contact.cs" />
       <Compile Remove="DTO\**" />
       <Compile Include="Dto\AccountDto.cs" />
+      <Compile Include="Dto\ContactDto.cs" />
       <Compile Include="Dto\UserDto.cs" />
       <Compile Remove="Helpers\Utils.cs" />
     </ItemGroup>

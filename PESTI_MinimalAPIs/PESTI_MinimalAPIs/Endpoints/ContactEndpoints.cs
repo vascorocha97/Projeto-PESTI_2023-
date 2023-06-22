@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,33 +5,34 @@ using PESTI_MinimalAPIs.Dto;
 using PESTI_MinimalAPIs.Endpoints.Internal;
 using PESTI_MinimalAPIs.Mappers;
 using PESTI_MinimalAPIs.Models;
-using PESTI_MinimalAPIs.Services.Accounts;
+using PESTI_MinimalAPIs.Services;
+using PESTI_MinimalAPIs.Services.Contacts;
 
 namespace PESTI_MinimalAPIs.Endpoints;
 
-public class AccountEndpoints : IEndpoints
+public class ContactEndpoints : IEndpoints
 {
     public static void DefineEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapPost("/createaccount", CreateAccount)
-            .Accepts<Account>("application/json")
-            .Produces(200,typeof(Account))
+        app.MapPost("/createcontact", CreateContact)
+            .Accepts<Contact>("application/json")
+            .Produces(200,typeof(Contact))
             .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
     }
     
-    private static async Task<IResult> CreateAccount(HttpContext context, IAccountService accountService, Account account, [FromServices] AccountMapper accountMapper)
+    private static async Task<IResult> CreateContact(HttpContext context, IContactService contactService, Contact contact, [FromServices] ContactMapper contactMapper)
     {
         //map account to dto
-        var accountDto = accountMapper.AccountToDto(account);
+        var contactDto = contactMapper.ContactToDto(contact);
         //create an account
-        var createdAccount = await accountService.CreateAccount(accountDto);
+        var createdContact = await contactService.CreateContact(contactDto);
         //set response content type to json
-        return Results.Ok(createdAccount);
+        return Results.Ok(createdContact);
     }
 
     public static void AddServices(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IAccountService, AccountService>();
-        services.AddScoped<AccountMapper>();
+        services.AddScoped<IContactService, ContactService>();
+        services.AddScoped<ContactMapper>();
     }
 }
