@@ -12,7 +12,6 @@
       <Compile Remove="Data\SqliteConnectionFactory.cs" />
       <Compile Remove="Models\Case.cs" />
       <Compile Remove="DTO\**" />
-      <Compile Include="Contracts\UserDto.cs" />
       <Compile Remove="Helpers\Utils.cs" />
       <Compile Remove="Mappers\CreateIncidentMapper.cs" />
       <Compile Remove="Mappers\IncidentMapper.cs" />
