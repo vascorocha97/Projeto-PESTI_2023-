@@ -6,5 +6,5 @@ namespace PESTI_MinimalAPIs.Services.Accounts;
 
 public interface IAccountService
 {
-    public Task<AccountDto> CreateAccount(AccountDto account);
+    public Task<Account?> CreateAccount(CRMAccount crmAccount);
 }

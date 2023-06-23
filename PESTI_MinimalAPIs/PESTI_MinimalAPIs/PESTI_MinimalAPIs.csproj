@@ -15,6 +15,10 @@
       <Compile Remove="Helpers\Utils.cs" />
       <Compile Remove="Mappers\CreateIncidentMapper.cs" />
       <Compile Remove="Mappers\IncidentMapper.cs" />
+      <Compile Remove="Contracts\Accounts\AccountDto.cs" />
+      <Compile Remove="Mappers\AccountMapper.cs" />
+      <Compile Remove="Mappers\ContactMapper.cs" />
+      <Compile Remove="Contracts\Contacts\ContactDto.cs" />
     </ItemGroup>
 
     <ItemGroup>

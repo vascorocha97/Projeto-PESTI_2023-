@@ -38,7 +38,7 @@ public class CRMIncidentResponseMapper
         return _mapper.Map<Incident>(crmIncidentResponse);
     }
 
-    public CRMIncidentResponse CRMIncidentResponseToIncident(Incident incident)
+    public CRMIncidentResponse IncidentToCRMIncidentResponse(Incident incident)
     {
         return _mapper.Map<CRMIncidentResponse>(incident);
     }

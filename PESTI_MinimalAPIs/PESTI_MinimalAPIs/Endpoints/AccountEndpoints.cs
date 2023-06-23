@@ -2,8 +2,9 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PESTI_MinimalAPIs.Contracts.Accounts;
 using PESTI_MinimalAPIs.Endpoints.Internal;
-using PESTI_MinimalAPIs.Mappers;
+using PESTI_MinimalAPIs.Mappers.Accounts;
 using PESTI_MinimalAPIs.Models;
 using PESTI_MinimalAPIs.Services.Accounts;
 
@@ -19,12 +20,12 @@ public class AccountEndpoints : IEndpoints
             .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
     }
     
-    private static async Task<IResult> CreateAccount(HttpContext context, IAccountService accountService, Account account, [FromServices] AccountMapper accountMapper)
+    private static async Task<IResult> CreateAccount(HttpContext context, IAccountService accountService, CreateAccountRequest createAccountRequest, [FromServices] CreateAccountMapper createAccountMapper)
     {
         //map account to dto
-        var accountDto = accountMapper.AccountToDto(account);
+        var crmAccount = createAccountMapper.CreateAccountRequestToCRMAccount(createAccountRequest);
         //create an account
-        var createdAccount = await accountService.CreateAccount(accountDto);
+        var createdAccount = await accountService.CreateAccount(crmAccount);
         //set response content type to json
         return Results.Ok(createdAccount);
     }
@@ -32,6 +33,8 @@ public class AccountEndpoints : IEndpoints
     public static void AddServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IAccountService, AccountService>();
-        services.AddScoped<AccountMapper>();
+        services.AddScoped<CreateAccountMapper>();
+        services.AddScoped<CRMAccountMapper>();
+        services.AddScoped<CRMAccountResponseMapper>();
     }
 }

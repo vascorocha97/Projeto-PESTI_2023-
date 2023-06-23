@@ -1,9 +1,10 @@
 using PESTI_MinimalAPIs.Contracts;
 using PESTI_MinimalAPIs.Contracts.Contacts;
+using PESTI_MinimalAPIs.Models;
 
 namespace PESTI_MinimalAPIs.Services.Contacts;
 
 public interface IContactService
 {
-    public Task<ContactDto> CreateContact(ContactDto contact);
+    public Task<Contact?> CreateContact(CRMContact crmContact);
 }

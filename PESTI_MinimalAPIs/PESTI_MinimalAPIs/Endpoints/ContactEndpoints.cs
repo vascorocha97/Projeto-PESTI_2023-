@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PESTI_MinimalAPIs.Contracts.Contacts;
 using PESTI_MinimalAPIs.Endpoints.Internal;
 using PESTI_MinimalAPIs.Mappers;
+using PESTI_MinimalAPIs.Mappers.Contacts;
 using PESTI_MinimalAPIs.Models;
 using PESTI_MinimalAPIs.Services;
 using PESTI_MinimalAPIs.Services.Contacts;
@@ -19,12 +21,12 @@ public class ContactEndpoints : IEndpoints
             .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
     }
     
-    private static async Task<IResult> CreateContact(HttpContext context, IContactService contactService, Contact contact, [FromServices] ContactMapper contactMapper)
+    private static async Task<IResult> CreateContact(HttpContext context, IContactService contactService, CreateContactRequest createContactRequest, [FromServices] CreateContactMapper createContactMapper)
     {
         //map account to dto
-        var contactDto = contactMapper.ContactToDto(contact);
+        var cmrContact = createContactMapper.CreateContactRequestToCRMContact(createContactRequest);
         //create an account
-        var createdContact = await contactService.CreateContact(contactDto);
+        var createdContact = await contactService.CreateContact(cmrContact);
         //set response content type to json
         return Results.Ok(createdContact);
     }
@@ -32,6 +34,8 @@ public class ContactEndpoints : IEndpoints
     public static void AddServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IContactService, ContactService>();
-        services.AddScoped<ContactMapper>();
+        services.AddScoped<CreateContactMapper>();
+        services.AddScoped<CRMContactMapper>();
+        services.AddScoped<CRMContactResponseMapper>();
     }
 }
