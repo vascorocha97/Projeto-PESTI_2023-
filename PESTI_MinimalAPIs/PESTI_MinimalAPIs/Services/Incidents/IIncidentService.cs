@@ -7,4 +7,6 @@ namespace PESTI_MinimalAPIs.Services.Incidents;
 public interface IIncidentService
 {
     public Task<Incident?> CreateIncident(CRMIncident crmIncident);
+    public Task<Incident?> GetIncidentById(CRMIncidentId crmIncidentId);
+    public Task<Incident?> UpdateIncident(CRMUpdateIncidentRequest crmUpdateIncidentRequest);
 }

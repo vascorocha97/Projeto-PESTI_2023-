@@ -13,7 +13,20 @@ public class IncidentEndpoints : IEndpoints
 {
     public static void DefineEndpoints(IEndpointRouteBuilder app)
     {
+        //Create Incident
         app.MapPost("/createincident", CreateIncident)
+            .Accepts<Incident>("application/json")
+            .Produces(200,typeof(Incident))
+            .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
+        
+        //Update Incident
+        app.MapPost("/updateincident", UpdateIncident)
+            .Accepts<Incident>("application/json")
+            .Produces(200,typeof(Incident))
+            .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
+        
+        //Get Incident By Id
+        app.MapPost("/getincidentbyid", GetIncidentById)
             .Accepts<Incident>("application/json")
             .Produces(200,typeof(Incident))
             .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
@@ -21,11 +34,23 @@ public class IncidentEndpoints : IEndpoints
     
     private static async Task<IResult> CreateIncident(HttpContext context, IIncidentService incidentService, CreateIncidentRequest createIncidentRequest, [FromServices] CreateIncidentMapper createIncidentMapper)
     {
-        //map incident to dto
         var crmIncident = createIncidentMapper.CreateIncidentRequestToCRMIncident(createIncidentRequest);
-        //create an incident
         var createdIncident = await incidentService.CreateIncident(crmIncident);
         return Results.Ok(createdIncident);
+    }
+    
+    private static async Task<IResult> UpdateIncident(HttpContext context, IIncidentService incidentService, UpdateIncidentRequest updateIncidentRequest, [FromServices] UpdateIncidentMapper updateIncidentMapper)
+    {
+        var crmIncidentUpdate = updateIncidentMapper.UpdateIncidentRequestToCRMUpdateIncidentRequest(updateIncidentRequest);
+        var updatedIncident = await incidentService.UpdateIncident(crmIncidentUpdate);
+        return Results.Ok(updatedIncident);
+    }
+    
+    private static async Task<IResult> GetIncidentById(HttpContext context, IIncidentService incidentService, IncidentIdRequest incidentIdRequest, [FromServices] IncidentIdMapper incidentIdMapper)
+    {
+        var crmContactId = incidentIdMapper.IncidentIdRequestToCrmIncidentId(incidentIdRequest);
+        var incident = await incidentService.GetIncidentById(crmContactId);
+        return Results.Ok(incident);
     }
 
     public static void AddServices(IServiceCollection services, IConfiguration configuration)
@@ -34,5 +59,7 @@ public class IncidentEndpoints : IEndpoints
         services.AddScoped<CreateIncidentMapper>();
         services.AddScoped<CRMIncidentMapper>();
         services.AddScoped<CRMIncidentResponseMapper>();
+        services.AddScoped<IncidentIdMapper>();
+        services.AddScoped<UpdateIncidentMapper>();
     }
 }

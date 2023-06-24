@@ -41,18 +41,14 @@ public class AccountEndpoints : IEndpoints
     
     private static async Task<IResult> CreateAccount(HttpContext context, IAccountService accountService, CreateAccountRequest createAccountRequest, [FromServices] CreateAccountMapper createAccountMapper)
     {
-        //map account to dto
         var crmAccount = createAccountMapper.CreateAccountRequestToCRMAccount(createAccountRequest);
-        //create an account
         var createdAccount = await accountService.CreateAccount(crmAccount);
         return Results.Ok(createdAccount);
     }
     
     private static async Task<IResult> UpdateAccount(HttpContext context, IAccountService accountService, UpdateAccountRequest updateAccountRequest, [FromServices] UpdateAccountMapper updateAccountMapper)
     {
-        //map account to dto
         var crmAccountUpdate = updateAccountMapper.UpdateAccountRequestToCRMUpdateAccountRequest(updateAccountRequest);
-        //create an account
         var updatedAccount = await accountService.UpdateAccount(crmAccountUpdate);
         return Results.Ok(updatedAccount);
     }

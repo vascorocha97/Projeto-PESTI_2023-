@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PESTI_MinimalAPIs.Contracts.Contacts;
 using PESTI_MinimalAPIs.Endpoints.Internal;
 using PESTI_MinimalAPIs.Mappers;
+using PESTI_MinimalAPIs.Mappers.Accounts;
 using PESTI_MinimalAPIs.Mappers.Contacts;
 using PESTI_MinimalAPIs.Models;
 using PESTI_MinimalAPIs.Services;
@@ -15,20 +16,44 @@ public class ContactEndpoints : IEndpoints
 {
     public static void DefineEndpoints(IEndpointRouteBuilder app)
     {
+        //Create Contact
         app.MapPost("/createcontact", CreateContact)
             .Accepts<Contact>("application/json")
             .Produces(200,typeof(Contact))
             .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
+        
+        //Update Contact
+        app.MapPost("/updatecontact", UpdateContact)
+            .Accepts<Contact>("application/json")
+            .Produces(200,typeof(Contact))
+            .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
+        
+        //Get Contact By Id
+        app.MapPost("/getcontactbyid", GetContactById)
+            .Accepts<Account>("application/json")
+            .Produces(200,typeof(Account))
+            .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
     }
-    
+
     private static async Task<IResult> CreateContact(HttpContext context, IContactService contactService, CreateContactRequest createContactRequest, [FromServices] CreateContactMapper createContactMapper)
     {
-        //map account to dto
         var cmrContact = createContactMapper.CreateContactRequestToCRMContact(createContactRequest);
-        //create an account
         var createdContact = await contactService.CreateContact(cmrContact);
-        //set response content type to json
         return Results.Ok(createdContact);
+    }
+    
+    private static async Task<IResult> UpdateContact(HttpContext context, IContactService contactService, UpdateContactRequest updateContactRequest, [FromServices] UpdateContactMapper updateContactMapper)
+    {
+        var cmrContactUpdate = updateContactMapper.UpdateContactRequestToCRMUpdateContactRequest(updateContactRequest);
+        var updatedContact = await contactService.UpdateContact(cmrContactUpdate);
+        return Results.Ok(updatedContact);
+    }
+    
+    private static async Task<IResult> GetContactById(HttpContext context, IContactService contactService, ContactIdRequest contactIdRequest, [FromServices] ContactIdMapper contactIdMapper)
+    {
+        var crmContactId = contactIdMapper.ContactIdRequestToCrmContactId(contactIdRequest);
+        var account = await contactService.GetContactById(crmContactId);
+        return Results.Ok(account);
     }
 
     public static void AddServices(IServiceCollection services, IConfiguration configuration)
@@ -37,5 +62,7 @@ public class ContactEndpoints : IEndpoints
         services.AddScoped<CreateContactMapper>();
         services.AddScoped<CRMContactMapper>();
         services.AddScoped<CRMContactResponseMapper>();
+        services.AddScoped<ContactIdMapper>();
+        services.AddScoped<UpdateContactMapper>();
     }
 }
