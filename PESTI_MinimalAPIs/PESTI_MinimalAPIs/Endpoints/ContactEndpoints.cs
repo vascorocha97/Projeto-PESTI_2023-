@@ -33,6 +33,12 @@ public class ContactEndpoints : IEndpoints
             .Accepts<Account>("application/json")
             .Produces(200,typeof(Account))
             .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
+        
+        //Delete Contact
+        app.MapPost("/deletecontact", DeleteContact)
+            .Accepts<Account>("application/json")
+            .Produces(200,typeof(Account))
+            .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
     }
 
     private static async Task<IResult> CreateContact(HttpContext context, IContactService contactService, CreateContactRequest createContactRequest, [FromServices] CreateContactMapper createContactMapper)
@@ -55,6 +61,13 @@ public class ContactEndpoints : IEndpoints
         var account = await contactService.GetContactById(crmContactId);
         return Results.Ok(account);
     }
+    
+    private static async Task<IResult> DeleteContact(HttpContext context, IContactService contactService, ContactIdRequest contactIdRequest, [FromServices] DeleteContactMapper deleteContactMapper)
+    {
+        var crmContactId = deleteContactMapper.ContactIdRequestToCrmDeleteContactId(contactIdRequest);
+        var isDeleted = await contactService.DeleteContact(crmContactId);
+        return isDeleted ? Results.NoContent() : Results.NotFound("Contact not found");
+    }
 
     public static void AddServices(IServiceCollection services, IConfiguration configuration)
     {
@@ -64,5 +77,6 @@ public class ContactEndpoints : IEndpoints
         services.AddScoped<CRMContactResponseMapper>();
         services.AddScoped<ContactIdMapper>();
         services.AddScoped<UpdateContactMapper>();
+        services.AddScoped<DeleteContactMapper>();
     }
 }

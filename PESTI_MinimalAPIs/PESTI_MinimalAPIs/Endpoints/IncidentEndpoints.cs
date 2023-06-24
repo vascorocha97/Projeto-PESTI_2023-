@@ -30,6 +30,12 @@ public class IncidentEndpoints : IEndpoints
             .Accepts<Incident>("application/json")
             .Produces(200,typeof(Incident))
             .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
+        
+        //Delete Incident 
+        app.MapPost("/deleteincident", DeleteIncident)
+            .Accepts<Incident>("application/json")
+            .Produces(200,typeof(Incident))
+            .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
     }
     
     private static async Task<IResult> CreateIncident(HttpContext context, IIncidentService incidentService, CreateIncidentRequest createIncidentRequest, [FromServices] CreateIncidentMapper createIncidentMapper)
@@ -48,9 +54,16 @@ public class IncidentEndpoints : IEndpoints
     
     private static async Task<IResult> GetIncidentById(HttpContext context, IIncidentService incidentService, IncidentIdRequest incidentIdRequest, [FromServices] IncidentIdMapper incidentIdMapper)
     {
-        var crmContactId = incidentIdMapper.IncidentIdRequestToCrmIncidentId(incidentIdRequest);
-        var incident = await incidentService.GetIncidentById(crmContactId);
+        var crmIncidentId = incidentIdMapper.IncidentIdRequestToCrmIncidentId(incidentIdRequest);
+        var incident = await incidentService.GetIncidentById(crmIncidentId);
         return Results.Ok(incident);
+    }
+    
+    private static async Task<IResult> DeleteIncident(HttpContext context, IIncidentService incidentService, IncidentIdRequest incidentIdRequest, [FromServices] DeleteIncidentMapper deleteIncidentMapper)
+    {
+        var crmIncidentId = deleteIncidentMapper.IncidentIdRequestToCrmDeleteIncidentId(incidentIdRequest);
+        var isDeleted = await incidentService.DeleteIncident(crmIncidentId);
+        return isDeleted ? Results.NoContent() : Results.NotFound("Incident not found");
     }
 
     public static void AddServices(IServiceCollection services, IConfiguration configuration)
@@ -61,5 +74,6 @@ public class IncidentEndpoints : IEndpoints
         services.AddScoped<CRMIncidentResponseMapper>();
         services.AddScoped<IncidentIdMapper>();
         services.AddScoped<UpdateIncidentMapper>();
+        services.AddScoped<DeleteIncidentMapper>();
     }
 }

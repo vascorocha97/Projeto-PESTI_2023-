@@ -70,4 +70,18 @@ public class ContactService : IContactService
         var contact = JsonConvert.DeserializeObject<CRMContactResponse>(result.Content!);
         return contact is null ? null : _crmContactResponseMapper.CRMContactResponseToContact(contact);
     }
+
+    public async Task<bool> DeleteContact(CRMDeleteContactId crmContactId)
+    {
+        var accessToken = await TokenUtils.GetAccessToken(_configuration);
+
+        var client = new RestClient(_configuration["Dynamics365:BaseUrl"]!);
+        var request = new RestRequest("myp_deleteContact", Method.Post);
+        request.AddHeader("Authorization", "Bearer " + accessToken);
+        request.AddJsonBody(crmContactId);
+
+        var result = await client.ExecuteAsync(request);
+
+        return result.IsSuccessStatusCode;
+    }
 }

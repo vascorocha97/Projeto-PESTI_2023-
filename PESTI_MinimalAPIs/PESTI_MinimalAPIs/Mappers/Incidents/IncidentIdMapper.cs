@@ -26,7 +26,7 @@ public class IncidentIdMapper
         return _mapper.Map<CRMIncidentId>(incidentIdRequest);
     }
 
-    public IncidentIdRequest CrmContactIdToContactIdRequest(CRMIncidentId crmIncidentId)
+    public IncidentIdRequest CrmIncidentIdToIncidentIdRequest(CRMIncidentId crmIncidentId)
     {
         return _mapper.Map<IncidentIdRequest>(crmIncidentId);
     }

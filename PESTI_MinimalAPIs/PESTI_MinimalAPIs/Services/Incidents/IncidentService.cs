@@ -71,4 +71,18 @@ public class IncidentService : IIncidentService
         var updatedIncident = JsonConvert.DeserializeObject<CRMIncidentResponse>(result.Content!);
         return updatedIncident is null ? null : _crmIncidentResponseMapper.CRMIncidentResponseToIncident(updatedIncident);
     }
+    
+    public async Task<bool> DeleteIncident(CRMDeleteIncidentId crmIncidentId)
+    {
+        var accessToken = await TokenUtils.GetAccessToken(_configuration);
+
+        var client = new RestClient(_configuration["Dynamics365:BaseUrl"]!);
+        var request = new RestRequest("myp_deleteIncident", Method.Post);
+        request.AddHeader("Authorization", "Bearer " + accessToken);
+        request.AddJsonBody(crmIncidentId);
+
+        var result = await client.ExecuteAsync(request);
+
+        return result.IsSuccessStatusCode;
+    }
 }

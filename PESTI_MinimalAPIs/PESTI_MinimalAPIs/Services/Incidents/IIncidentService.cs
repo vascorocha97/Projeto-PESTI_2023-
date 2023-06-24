@@ -9,4 +9,5 @@ public interface IIncidentService
     public Task<Incident?> CreateIncident(CRMIncident crmIncident);
     public Task<Incident?> GetIncidentById(CRMIncidentId crmIncidentId);
     public Task<Incident?> UpdateIncident(CRMUpdateIncidentRequest crmUpdateIncidentRequest);
+    public Task<bool> DeleteIncident(CRMDeleteIncidentId crmIncidentId);
 }
