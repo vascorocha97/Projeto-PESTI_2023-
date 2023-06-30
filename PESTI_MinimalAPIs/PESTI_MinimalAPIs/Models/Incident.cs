@@ -3,7 +3,7 @@ namespace PESTI_MinimalAPIs.Models;
 public class Incident
 {
     public Guid? Id { get; set; }
-    public string Tile { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
     public Guid SubjectId { get; set; }
     public Guid CustomerId { get; set; }
     public int Origin { get; set; }

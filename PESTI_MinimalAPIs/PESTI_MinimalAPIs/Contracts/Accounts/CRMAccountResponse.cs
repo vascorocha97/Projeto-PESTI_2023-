@@ -11,3 +11,9 @@ public class CRMAccountResponse
     public string tickersymbol { get; set; } = string.Empty;
     public int customertypecode { get; set; }
 }
+
+public class CRMAccountsResponse
+{
+    public string first { get; set; }
+    public List<CRMAccountResponse> value { get; set; }
+}

@@ -1,6 +1,5 @@
 using AutoMapper;
 using PESTI_MinimalAPIs.Contracts.Accounts;
-using PESTI_MinimalAPIs.Contracts.Incidents;
 
 namespace PESTI_MinimalAPIs.Mappers.Accounts;
 

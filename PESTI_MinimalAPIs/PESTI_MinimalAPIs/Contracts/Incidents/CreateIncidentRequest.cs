@@ -2,7 +2,7 @@ namespace PESTI_MinimalAPIs.Contracts.Incidents;
 
 public class CreateIncidentRequest
 {
-    public string Tile { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
     public Guid SubjectId { get; set; }
     public Guid CustomerId { get; set; }
     public int Origin { get; set; }

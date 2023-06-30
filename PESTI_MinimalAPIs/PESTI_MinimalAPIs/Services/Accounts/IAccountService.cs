@@ -1,4 +1,3 @@
-using PESTI_MinimalAPIs.Contracts;
 using PESTI_MinimalAPIs.Contracts.Accounts;
 using PESTI_MinimalAPIs.Models;
 

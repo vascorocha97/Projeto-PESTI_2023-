@@ -1,9 +1,6 @@
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
-using PESTI_MinimalAPIs.Contracts;
 using PESTI_MinimalAPIs.Contracts.Incidents;
 using PESTI_MinimalAPIs.Helpers;
-using PESTI_MinimalAPIs.Mappers;
 using PESTI_MinimalAPIs.Mappers.Incidents;
 using PESTI_MinimalAPIs.Models;
 using RestSharp;
@@ -35,7 +32,6 @@ public class IncidentService : IIncidentService
         
         var createdIncident = JsonConvert.DeserializeObject<CRMIncidentResponse>(result.Content!);
         return createdIncident is null ? null : _crmIncidentResponseMapper.CRMIncidentResponseToIncident(createdIncident);
-
     }
 
     public async Task<Incident?> GetIncidentById(CRMIncidentId crmIncidentId)
@@ -84,5 +80,21 @@ public class IncidentService : IIncidentService
         var result = await client.ExecuteAsync(request);
 
         return result.IsSuccessStatusCode;
+    }
+
+    public async Task<List<Incident>?> GetAllIncidents()
+    {
+        var accessToken = await TokenUtils.GetAccessToken(_configuration);
+
+        var client = new RestClient(_configuration["Dynamics365:BaseUrl"]!);
+        var request = new RestRequest("myp_getAllIncidents", Method.Post);
+        request.AddHeader("Authorization", "Bearer " + accessToken);
+
+        var result = await client.ExecuteAsync(request);
+
+        if (!result.IsSuccessStatusCode) return null;
+
+        var incidentList = JsonConvert.DeserializeObject<CRMIncidentsResponse>(result.Content!);
+        return incidentList?.value?.Select(a => _crmIncidentResponseMapper.CRMIncidentResponseToIncident(a)).ToList() ?? new List<Incident>();
     }
 }

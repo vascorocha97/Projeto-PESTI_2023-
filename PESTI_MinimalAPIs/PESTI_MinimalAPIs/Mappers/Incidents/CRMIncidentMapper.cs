@@ -13,7 +13,7 @@ public class CRMIncidentMapper
         {
             cfg.CreateMap<CRMIncident, CRMIncidentResponse>()
                 .ForMember(dest => dest.title, 
-                    opt => opt.MapFrom(src => src.myp_IncidentTile))
+                    opt => opt.MapFrom(src => src.myp_IncidentTitle))
                 .ForMember(dest => dest._subjectid_value, 
                     opt => opt.MapFrom(src => src.myp_IncidentSubjectId))
                 .ForMember(dest => dest._customerid_value, 

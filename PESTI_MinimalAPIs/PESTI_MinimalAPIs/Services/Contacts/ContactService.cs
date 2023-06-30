@@ -1,9 +1,7 @@
 using Newtonsoft.Json;
 using PESTI_MinimalAPIs.Contracts.Contacts;
-using PESTI_MinimalAPIs.Contracts.Incidents;
 using PESTI_MinimalAPIs.Helpers;
 using PESTI_MinimalAPIs.Mappers.Contacts;
-using PESTI_MinimalAPIs.Mappers.Incidents;
 using PESTI_MinimalAPIs.Models;
 using RestSharp;
 
@@ -83,5 +81,21 @@ public class ContactService : IContactService
         var result = await client.ExecuteAsync(request);
 
         return result.IsSuccessStatusCode;
+    }
+
+    public async Task<List<Contact>?> GetAllContacts()
+    {
+        var accessToken = await TokenUtils.GetAccessToken(_configuration);
+
+        var client = new RestClient(_configuration["Dynamics365:BaseUrl"]!);
+        var request = new RestRequest("myp_getAllContacts", Method.Post);
+        request.AddHeader("Authorization", "Bearer " + accessToken);
+
+        var result = await client.ExecuteAsync(request);
+
+        if (!result.IsSuccessStatusCode) return null;
+
+        var contactList = JsonConvert.DeserializeObject<CRMContactsResponse>(result.Content!);
+        return contactList?.value?.Select(a => _crmContactResponseMapper.CRMContactResponseToContact(a)).ToList() ?? new List<Contact>();
     }
 }

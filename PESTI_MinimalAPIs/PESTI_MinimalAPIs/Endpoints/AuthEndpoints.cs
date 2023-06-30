@@ -24,46 +24,44 @@ public class AuthEndpoints : IEndpoints
         app.MapPost("/login", Login)
             .Accepts<UserDto>("application/json")
             .Produces<string>();
-
-        IResult Login(UserLogin user, IUserService service, IConfiguration config)
-        {
-            if (!string.IsNullOrEmpty(user.Email) &&
-                !string.IsNullOrEmpty(user.Password))
-            {
-                var loggedInUser = service.GetUserByEmail(user);
-                
-                if (PasswordUtils.ValidatePassword(user.Password, loggedInUser.PasswordHash!,
-                        loggedInUser.PasswordSalt))
-                {
-                    var claims = new[]
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, loggedInUser.Id.ToString()),
-                        new Claim(ClaimTypes.Email, loggedInUser.Email),
-                        new Claim(ClaimTypes.GivenName, loggedInUser.Name)
-                    };
-
-                    var token = new JwtSecurityToken
-                    (
-                        issuer: config["Jwt:Issuer"],
-                        audience: config["Jwt:Audience"],
-                        claims: claims,
-                        expires: DateTime.UtcNow.AddDays(60),
-                        notBefore: DateTime.UtcNow,
-                        signingCredentials: new SigningCredentials(
-                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
-                            SecurityAlgorithms.HmacSha256)
-                    );
-
-                    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-                    return Results.Ok(tokenString);
-                }
-            }
-            
-            return Results.BadRequest("Invalid user credentials");
-        }
     }
+    private static IResult Login(UserLogin user, IUserService service, IConfiguration config)
+    {
+        if (!string.IsNullOrEmpty(user.Email) &&
+            !string.IsNullOrEmpty(user.Password))
+        {
+            var loggedInUser = service.GetUserByEmail(user);
+                
+            if (PasswordUtils.ValidatePassword(user.Password, loggedInUser.PasswordHash!,
+                    loggedInUser.PasswordSalt))
+            {
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, loggedInUser.Id.ToString()),
+                    new Claim(ClaimTypes.Email, loggedInUser.Email),
+                    new Claim(ClaimTypes.GivenName, loggedInUser.Name)
+                };
 
+                var token = new JwtSecurityToken
+                (
+                    issuer: config["Jwt:Issuer"],
+                    audience: config["Jwt:Audience"],
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddDays(60),
+                    notBefore: DateTime.UtcNow,
+                    signingCredentials: new SigningCredentials(
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
+                        SecurityAlgorithms.HmacSha256)
+                );
+
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+                return Results.Ok(tokenString);
+            }
+        }
+            
+        return Results.BadRequest("Invalid user credentials");
+    }
     public static void AddServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IUserService, UserService>();

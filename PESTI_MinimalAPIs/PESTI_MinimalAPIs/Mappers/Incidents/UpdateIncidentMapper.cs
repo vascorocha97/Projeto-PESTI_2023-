@@ -14,8 +14,8 @@ public class UpdateIncidentMapper
             cfg.CreateMap<UpdateIncidentRequest, CRMUpdateIncidentRequest>()
                 .ForMember(dest => dest.myp_UpdateIncidentId, 
                     opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.myp_UpdateIncidentTile, 
-                    opt => opt.MapFrom(src => src.Tile))
+                .ForMember(dest => dest.myp_UpdateIncidentTitle, 
+                    opt => opt.MapFrom(src => src.Title))
                 .ForMember(dest => dest.myp_UpdateIncidentSubjectId, 
                     opt => opt.MapFrom(src => src.SubjectId))
                 .ForMember(dest => dest.myp_UpdateIncidentCustomerId, 

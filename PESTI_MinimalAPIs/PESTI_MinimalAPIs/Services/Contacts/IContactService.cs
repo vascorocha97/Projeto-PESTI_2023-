@@ -1,4 +1,3 @@
-using PESTI_MinimalAPIs.Contracts;
 using PESTI_MinimalAPIs.Contracts.Contacts;
 using PESTI_MinimalAPIs.Models;
 
@@ -10,4 +9,6 @@ public interface IContactService
     public Task<Contact?> GetContactById(CRMContactId crmContactId);
     public Task<Contact?> UpdateContact(CRMUpdateContactRequest crmUpdateContactRequest);
     public Task<bool> DeleteContact(CRMDeleteContactId crmContactId);
+
+    public Task<List<Contact>?> GetAllContacts();
 }

@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PESTI_MinimalAPIs.Contracts.Contacts;
 using PESTI_MinimalAPIs.Endpoints.Internal;
-using PESTI_MinimalAPIs.Mappers;
-using PESTI_MinimalAPIs.Mappers.Accounts;
 using PESTI_MinimalAPIs.Mappers.Contacts;
 using PESTI_MinimalAPIs.Models;
-using PESTI_MinimalAPIs.Services;
 using PESTI_MinimalAPIs.Services.Contacts;
 
 namespace PESTI_MinimalAPIs.Endpoints;
@@ -30,14 +27,21 @@ public class ContactEndpoints : IEndpoints
         
         //Get Contact By Id
         app.MapPost("/getcontactbyid", GetContactById)
-            .Accepts<Account>("application/json")
-            .Produces(200,typeof(Account))
+            .Accepts<Contact>("application/json")
+            .Produces(200,typeof(Contact))
             .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
+        
+        //Get All Contacts
+        app.MapPost("/getallcontacts", GetAllContacts)
+            .Accepts<Contact>("application/json")
+            .Produces(200,typeof(Contact))
+            .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
+
         
         //Delete Contact
         app.MapPost("/deletecontact", DeleteContact)
-            .Accepts<Account>("application/json")
-            .Produces(200,typeof(Account))
+            .Accepts<Contact>("application/json")
+            .Produces(200,typeof(Contact))
             .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
     }
 
@@ -62,6 +66,12 @@ public class ContactEndpoints : IEndpoints
         return Results.Ok(account);
     }
     
+    private static async Task<IResult> GetAllContacts(HttpContext context, IContactService contactService)
+    {
+        var accounts = await contactService.GetAllContacts();
+        return Results.Ok(accounts);
+    }
+    
     private static async Task<IResult> DeleteContact(HttpContext context, IContactService contactService, ContactIdRequest contactIdRequest, [FromServices] DeleteContactMapper deleteContactMapper)
     {
         var crmContactId = deleteContactMapper.ContactIdRequestToCrmDeleteContactId(contactIdRequest);
@@ -73,8 +83,6 @@ public class ContactEndpoints : IEndpoints
     {
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<CreateContactMapper>();
-        services.AddScoped<CRMContactMapper>();
-        services.AddScoped<CRMContactResponseMapper>();
         services.AddScoped<ContactIdMapper>();
         services.AddScoped<UpdateContactMapper>();
         services.AddScoped<DeleteContactMapper>();

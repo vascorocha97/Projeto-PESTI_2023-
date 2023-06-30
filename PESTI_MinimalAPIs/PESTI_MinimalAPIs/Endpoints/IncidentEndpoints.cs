@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using PESTI_MinimalAPIs.Contracts.Incidents;
 using PESTI_MinimalAPIs.Endpoints.Internal;
 using PESTI_MinimalAPIs.Mappers.Incidents;
+using PESTI_MinimalAPIs.Models;
 using PESTI_MinimalAPIs.Services.Incidents;
-using Incident = PESTI_MinimalAPIs.Models.Incident;
 
 namespace PESTI_MinimalAPIs.Endpoints;
 
@@ -27,6 +27,12 @@ public class IncidentEndpoints : IEndpoints
         
         //Get Incident By Id
         app.MapPost("/getincidentbyid", GetIncidentById)
+            .Accepts<Incident>("application/json")
+            .Produces(200,typeof(Incident))
+            .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
+        
+        //Get All Incidents
+        app.MapPost("/getallincidents", GetAllIncidents)
             .Accepts<Incident>("application/json")
             .Produces(200,typeof(Incident))
             .RequireAuthorization(new AuthorizeAttribute {AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme});
@@ -59,6 +65,12 @@ public class IncidentEndpoints : IEndpoints
         return Results.Ok(incident);
     }
     
+    private static async Task<IResult> GetAllIncidents(HttpContext context, IIncidentService incidentService)
+    {
+        var accounts = await incidentService.GetAllIncidents();
+        return Results.Ok(accounts);
+    }
+    
     private static async Task<IResult> DeleteIncident(HttpContext context, IIncidentService incidentService, IncidentIdRequest incidentIdRequest, [FromServices] DeleteIncidentMapper deleteIncidentMapper)
     {
         var crmIncidentId = deleteIncidentMapper.IncidentIdRequestToCrmDeleteIncidentId(incidentIdRequest);
@@ -70,8 +82,6 @@ public class IncidentEndpoints : IEndpoints
     {
         services.AddScoped<IIncidentService, IncidentService>();
         services.AddScoped<CreateIncidentMapper>();
-        services.AddScoped<CRMIncidentMapper>();
-        services.AddScoped<CRMIncidentResponseMapper>();
         services.AddScoped<IncidentIdMapper>();
         services.AddScoped<UpdateIncidentMapper>();
         services.AddScoped<DeleteIncidentMapper>();

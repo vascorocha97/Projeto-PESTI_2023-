@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -70,8 +69,6 @@ public class AccountEndpoints : IEndpoints
     {
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<CreateAccountMapper>();
-        services.AddScoped<CRMAccountMapper>();
-        services.AddScoped<CRMAccountResponseMapper>();
         services.AddScoped<AccountIdMapper>();
         services.AddScoped<UpdateAccountMapper>();
     }

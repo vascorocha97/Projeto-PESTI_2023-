@@ -1,9 +1,6 @@
 using Newtonsoft.Json;
-using PESTI_MinimalAPIs.Contracts;
 using PESTI_MinimalAPIs.Contracts.Accounts;
-using PESTI_MinimalAPIs.Contracts.Incidents;
 using PESTI_MinimalAPIs.Helpers;
-using PESTI_MinimalAPIs.Mappers;
 using PESTI_MinimalAPIs.Mappers.Accounts;
 using PESTI_MinimalAPIs.Models;
 using RestSharp;
@@ -67,8 +64,8 @@ public class AccountService : IAccountService
 
         if (!result.IsSuccessStatusCode) return null;
 
-        var accountList = JsonConvert.DeserializeObject<List<CRMAccountResponse>>(result.Content!);
-        return accountList?.Select(a => _crmAccountResponseMapper.CRMAccountResponseToAccount(a)).ToList() ?? new List<Account>();
+        var accountList = JsonConvert.DeserializeObject<CRMAccountsResponse>(result.Content!);
+        return accountList?.value?.Select(a => _crmAccountResponseMapper.CRMAccountResponseToAccount(a)).ToList() ?? new List<Account>();
     }
     
     public async Task<Account?> GetAccountById (CRMAccountId crmAccountId)

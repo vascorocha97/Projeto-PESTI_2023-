@@ -10,3 +10,9 @@ public class CRMContactResponse
     public string emailaddress1 { get; set; } = string.Empty;
     public string telephone1 { get; set; } = string.Empty;
 }
+
+public class CRMContactsResponse
+{
+    public string first { get; set; }
+    public List<CRMContactResponse> value { get; set; }
+}

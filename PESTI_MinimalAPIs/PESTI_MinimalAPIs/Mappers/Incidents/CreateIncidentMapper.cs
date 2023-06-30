@@ -1,7 +1,5 @@
 using AutoMapper;
-using PESTI_MinimalAPIs.Contracts.Accounts;
 using PESTI_MinimalAPIs.Contracts.Incidents;
-using PESTI_MinimalAPIs.Models;
 
 namespace PESTI_MinimalAPIs.Mappers.Incidents;
 
@@ -14,8 +12,8 @@ public class CreateIncidentMapper
         var config = new MapperConfiguration(cfg =>
         {
             cfg.CreateMap<CreateIncidentRequest, CRMIncident>()
-                .ForMember(dest => dest.myp_IncidentTile, 
-                    opt => opt.MapFrom(src => src.Tile))
+                .ForMember(dest => dest.myp_IncidentTitle, 
+                    opt => opt.MapFrom(src => src.Title))
                 .ForMember(dest => dest.myp_IncidentSubjectId, 
                     opt => opt.MapFrom(src => src.SubjectId))
                 .ForMember(dest => dest.myp_IncidentCustomerId, 

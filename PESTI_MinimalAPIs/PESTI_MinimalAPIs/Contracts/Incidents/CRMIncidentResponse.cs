@@ -10,3 +10,9 @@ public class CRMIncidentResponse
     public Guid _primarycontactid_value { get; set; }
     public int customersatisfactioncode { get; set; }
 }
+
+public class CRMIncidentsResponse
+{
+    public string first { get; set; } = string.Empty;
+    public List<CRMIncidentResponse> value { get; set; }
+}
