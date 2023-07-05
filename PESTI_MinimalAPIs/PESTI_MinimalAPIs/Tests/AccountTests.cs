@@ -1,10 +1,10 @@
-using System.Net;
-using System.Text;
-using Xunit;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Newtonsoft.Json;
+using Microsoft.Extensions.DependencyInjection;
+using PESTI_MinimalAPIs.Contracts.Accounts;
 using PESTI_MinimalAPIs.Models;
-using JsonSerializerOptions = System.Text.Json.JsonSerializerOptions;
+using PESTI_MinimalAPIs.Services.Accounts;
+using Xunit;
 
 namespace PESTI_MinimalAPIs.Tests;
 
@@ -15,50 +15,40 @@ public class AccountTests
 
     public AccountTests()
     {
-        //create a test server 
-        _server = new TestServer(new WebHostBuilder().UseStartup<Program>());
+        _server = new TestServer(new WebHostBuilder()
+            .UseStartup<Program>());
+
         _client = _server.CreateClient();
     }
 
     [Fact]
-    public async Task CreateAccountTest()
+    public async Task CreateAccountEndpointTest()
     {
-        var testAccount = new StringContent(@"{
-        ""Name"": ""Conta Teste"",
-        ""Phone"": ""1234567890"",
-        ""Fax"": ""9876543210"",
-        ""Website"": ""http://www.teste.com"",
-        ""ParentAccount"": ""a16b3f4b-1be7-e611-8101-e0071b6af231"",
-        ""Ticker"": ""TICKER"",
-        ""RelationshipField"": 2
-        }", Encoding.UTF8, "application/json");
-        
-        var response = await _client.PostAsync("/createaccount", testAccount);
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    }
-    
-    [Fact]
-    public async Task UpdateAccountTest()
-    {
-        var testAccount = new StringContent(@"{
-        ""Id"": ""Conta Update"",
-        ""Name"": ""Conta Update"",
-        ""Phone"": ""1234567890"",
-        ""Fax"": ""9876543210"",
-        ""Website"": ""http://www.update.com"",
-        ""ParentAccount"": ""a16b3f4b-1be7-e611-8101-e0071b6af231"",
-        ""Ticker"": ""TICKER"",
-        ""RelationshipField"": 2
-        }", Encoding.UTF8, "application/json");
-        
-        var response = await _client.PostAsync("/createaccount", testAccount);
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    }
+        // Arrange
+        var requestData = new CreateAccountRequest
+        {
+            Name = "Test Account",
+            Phone = "123456789",
+            Fax = "987654321",
+            Website = "https://example.com",
+            ParentAccount = Guid.Parse("a16b3f4b-1be7-e611-8101-e0071b6af231"),
+            Ticker = "TEST",
+            RelationshipField = 1
+        };
 
-    public void Dispose()
-    {
-        // Dispose the TestServer and HttpClient
-        _client.Dispose();
-        _server.Dispose();
+        // Act
+        var response = await _client.PostAsJsonAsync("/createaccount", requestData);
+        response.EnsureSuccessStatusCode();
+
+        var createdAccount = await response.Content.ReadFromJsonAsync<Account>();
+
+        // Assert
+        Assert.Equal(requestData.Name, createdAccount.Name);
+        Assert.Equal(requestData.Phone, createdAccount.Phone);
+        Assert.Equal(requestData.Fax, createdAccount.Fax);
+        Assert.Equal(requestData.Website, createdAccount.Website);
+        Assert.Equal(requestData.ParentAccount, createdAccount.ParentAccount);
+        Assert.Equal(requestData.Ticker, createdAccount.Ticker);
+        Assert.Equal(requestData.RelationshipField, createdAccount.RelationshipField);
     }
 }
